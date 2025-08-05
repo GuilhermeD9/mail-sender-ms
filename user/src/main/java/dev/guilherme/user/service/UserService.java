@@ -6,6 +6,9 @@ import dev.guilherme.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class UserService {
     private final UserRepository repository;
@@ -21,5 +24,26 @@ public class UserService {
         userEntity = repository.save(userEntity);
         producer.publishEvent(userEntity);
         return userEntity;
+    }
+
+    public List<UserEntity> findAllUsers() {
+        return repository.findAll();
+    }
+
+    public List<UserEntity> findUsersByName(String name) {
+        return repository.findUsersByName(name);
+    }
+
+    public Void deleteUserById(UUID id) {
+        repository.deleteById(id);
+        return null;
+    }
+
+    public UserEntity updateUser(UserEntity userEntity, UUID uuid) {
+        UserEntity existingUser = repository.findById(uuid)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + uuid));
+        existingUser.setName(userEntity.getName());
+        existingUser.setEmail(userEntity.getEmail());
+        return repository.save(existingUser);
     }
 }
