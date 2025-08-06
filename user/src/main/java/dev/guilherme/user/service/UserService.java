@@ -1,5 +1,6 @@
 package dev.guilherme.user.service;
 
+import dev.guilherme.user.exception.EmailAlreadyExistsException;
 import dev.guilherme.user.entity.UserEntity;
 import dev.guilherme.user.producer.UserProducer;
 import dev.guilherme.user.repository.UserRepository;
@@ -21,6 +22,9 @@ public class UserService {
 
     @Transactional
     public UserEntity saveAndPublishUser(UserEntity userEntity) {
+        if (repository.existsByEmail(userEntity.getEmail())) {
+            throw new EmailAlreadyExistsException(userEntity.getEmail());
+        }
         userEntity = repository.save(userEntity);
         producer.publishEvent(userEntity);
         return userEntity;
