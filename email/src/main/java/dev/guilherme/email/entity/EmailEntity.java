@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EmailEntity {
 
-    private final long serialVersioUID = 1L;
+    private static final long serialVersionUUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +29,7 @@ public class EmailEntity {
     private String emailSubject;
     @Column(columnDefinition = "TEXT")
     private String body;
-    private LocalDateTime sendAt;
+    private LocalDateTime sendDateEmail;
+    @Enumerated(EnumType.STRING)
     private EmailStatus emailStatus;
 }

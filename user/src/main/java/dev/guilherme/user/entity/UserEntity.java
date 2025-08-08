@@ -13,7 +13,8 @@ import java.util.UUID;
 @AllArgsConstructor @NoArgsConstructor
 @Table(name = "TB_USERS")
 public class UserEntity {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
