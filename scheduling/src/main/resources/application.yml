@@ -4,7 +4,7 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5436/ms-scheduling
-    username: postgres-admin
+    username: postgres-user
     password: postgres-password
     driver-class-name: org.postgresql.Driver
 
