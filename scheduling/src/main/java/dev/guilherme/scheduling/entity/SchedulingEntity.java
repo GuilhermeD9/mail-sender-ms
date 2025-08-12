@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -21,9 +22,11 @@ public class SchedulingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID schedulingId;
-    private UUID clientId;
+    private UUID userId;
     private UUID professionalId;
-    private LocalDateTime schedulingDate;
+    private LocalDate schedulingDate;
+    private LocalTime schedulingTime;
     @Enumerated(EnumType.STRING)
     private SchedulingStatus schedulingStatus;
+    private String description;
 }
