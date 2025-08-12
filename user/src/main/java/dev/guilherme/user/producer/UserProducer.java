@@ -13,8 +13,6 @@ public class UserProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    private final String ROUTING_KEY = "email-queue";
-
     public void publishEvent(UserEntity userEntity) {
         var emailDto = new EmailDto();
         emailDto.setUserId(userEntity.getUserId());
@@ -22,6 +20,7 @@ public class UserProducer {
         emailDto.setEmailSubject("This email is automatic.");
         emailDto.setBody("Hello " + userEntity.getName() + " Welcome!");
 
+        String ROUTING_KEY = "email-queue";
         rabbitTemplate.convertAndSend("", ROUTING_KEY, emailDto);
     }
 }
