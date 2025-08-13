@@ -1,7 +1,7 @@
 package dev.guilherme.user.service;
 
-import dev.guilherme.user.exception.EmailAlreadyExistsException;
 import dev.guilherme.user.entity.UserEntity;
+import dev.guilherme.user.exception.EmailAlreadyExistsException;
 import dev.guilherme.user.producer.UserProducer;
 import dev.guilherme.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -35,17 +35,21 @@ public class UserService {
     }
 
     public List<UserEntity> findUsersByName(String name) {
-        return repository.findUsersByName(name);
+        return repository.findUsersByNameContainingIgnoreCase(name);
     }
 
-    public Void deleteUserById(UUID id) {
-        repository.deleteById(id);
-        return null;
+    public UserEntity findUserByCode(Integer code) {
+        return repository.findUserByUserCode(code);
     }
 
-    public UserEntity updateUser(UserEntity userEntity, UUID uuid) {
-        UserEntity existingUser = repository.findById(uuid)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + uuid));
+    public void deleteUserByCode(Integer code) {
+        UUID userId = findUserByCode(code).getUserId();
+        repository.deleteById(userId);
+    }
+
+    @Transactional
+    public UserEntity updateUser(UserEntity userEntity, Integer userCode) {
+        UserEntity existingUser = findUserByCode(userCode);
         existingUser.setName(userEntity.getName());
         existingUser.setEmail(userEntity.getEmail());
         return repository.save(existingUser);

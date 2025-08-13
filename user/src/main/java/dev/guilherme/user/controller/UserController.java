@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/users")
@@ -34,8 +33,8 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<List<UserEntity>> getUserByName(@PathVariable String name) {
+    @GetMapping("/name")
+    public ResponseEntity<List<UserEntity>> getUserByName(@RequestParam String name) {
         List<UserEntity> users = userService.findUsersByName(name);
         if (users != null) {
             return ResponseEntity.ok(users);
@@ -44,17 +43,27 @@ public class UserController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteUserById(@RequestParam UUID id) {
-        userService.deleteUserById(id);
+    @GetMapping("/code/{code}")
+    public ResponseEntity<UserEntity> getUserByCode(@PathVariable Integer code) {
+        UserEntity user = userService.findUserByCode(code);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @DeleteMapping("/{code}")
+    public ResponseEntity<Void> deleteUserByCode(@PathVariable Integer code) {
+        userService.deleteUserByCode(code);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public ResponseEntity<UserEntity> updateUserById(@RequestBody UserDto user, @RequestParam UUID uuid) {
+    @PutMapping("/{userCode}")
+    public ResponseEntity<UserEntity> updateUserById(@RequestBody UserDto user, @PathVariable Integer userCode) {
         var userEntity = new UserEntity();
         BeanUtils.copyProperties(user, userEntity);
-        UserEntity updatedUser = userService.updateUser(userEntity, uuid);
+        UserEntity updatedUser = userService.updateUser(userEntity, userCode);
         return ResponseEntity.ok(updatedUser);
     }
 }

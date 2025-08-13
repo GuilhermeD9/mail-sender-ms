@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Generated;
+import org.hibernate.generator.EventType;
 
 import java.util.UUID;
 
@@ -17,8 +19,13 @@ public class UserEntity {
     private static final long serialVersionUUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID userId;
+
+    @Generated(event = EventType.INSERT)
+    @Column(unique = true, nullable = false, insertable = false, updatable = false)
+    private Integer userCode;
+
     private String name;
     private String email;
 }
