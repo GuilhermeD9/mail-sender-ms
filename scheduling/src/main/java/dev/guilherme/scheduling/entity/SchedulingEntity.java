@@ -23,7 +23,9 @@ public class SchedulingEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID schedulingId;
     private UUID userId;
+    private String userEmail;
     private UUID professionalId;
+    private String professionalEmail;
     private LocalDate schedulingDate;
     private LocalTime schedulingTime;
     @Enumerated(EnumType.STRING)
