@@ -5,6 +5,8 @@ import dev.guilherme.scheduling.entity.SchedulingEntity;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class SchedulingProducer {
 
@@ -14,14 +16,19 @@ public class SchedulingProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void publishEvent(SchedulingEntity schedulingEntity) {
+    public void publishEvent(SchedulingEntity schedulingEntity, UUID userId) {
         var emailDto = new EmailDto();
-        emailDto.setUserId(schedulingEntity.getUserId());
+        emailDto.setUserId(userId);
         emailDto.setEmailTo(schedulingEntity.getUserEmail());
         emailDto.setEmailSubject("Novo Agendamento Cadastrado");
         emailDto.setBody(String.format("""
                     Olá, seu agendamento foi realizado com sucesso para o dia %s
                     no horário %s. Profissional responsável: %s.
-                    """, schedulingEntity.getSchedulingDate(), schedulingEntity.getSchedulingTime(),schedulingEntity.getProfessionalId()));
+                    """,
+                schedulingEntity.getSchedulingDate(),
+                schedulingEntity.getSchedulingTime(),
+                schedulingEntity.getProfessionalEmail())
+        );
+        rabbitTemplate.convertAndSend("", "email-queue", emailDto);
     }
 }
