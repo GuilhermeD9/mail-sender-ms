@@ -18,11 +18,12 @@ public class SchedulingService {
         this.webClient = webClient;
     }
 
-    // Add methods to handle scheduling operations, such as create, update, delete, and retrieve schedules.
 
-    public SchedulingEntity createScheduling(SchedulingEntity schedulingEntity, UserDto userDto) {
-        schedulingEntity.setUserId(userDto.userId());
-        schedulingEntity.setProfessionalId(userDto.userId());
+    public SchedulingEntity createScheduling(SchedulingEntity schedulingEntity) {
+        UserDto user = getCurrentUser(schedulingEntity.getUserCode());
+        UserDto professional = getCurrentUser(schedulingEntity.getProfessionalCode());
+        schedulingEntity.setUserEmail(user.email());
+        schedulingEntity.setProfessionalEmail(professional.email());
         schedulingEntity.setSchedulingStatus(SchedulingStatus.PENDING);
         return schedulingRepository.save(schedulingEntity);
     }

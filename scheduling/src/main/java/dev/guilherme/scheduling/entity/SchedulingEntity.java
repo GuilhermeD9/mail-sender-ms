@@ -22,9 +22,9 @@ public class SchedulingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID schedulingId;
-    private UUID userId;
+    private Integer userCode;
     private String userEmail;
-    private UUID professionalId;
+    private Integer professionalCode;
     private String professionalEmail;
     private LocalDate schedulingDate;
     private LocalTime schedulingTime;
