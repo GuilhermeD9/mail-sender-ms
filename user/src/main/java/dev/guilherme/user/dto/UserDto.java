@@ -7,5 +7,6 @@ public record UserDto(
         @NotBlank
         String name,
         @Email @NotBlank
-        String email) {
+        String email,
+        boolean professional) {
 }

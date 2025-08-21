@@ -26,6 +26,7 @@ public class UserService {
             throw new EmailAlreadyExistsException(userEntity.getEmail());
         }
         userEntity = repository.save(userEntity);
+        repository.flush();
         producer.publishEvent(userEntity);
         return userEntity;
     }

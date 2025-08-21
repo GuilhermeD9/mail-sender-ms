@@ -23,9 +23,10 @@ public class UserEntity {
     private UUID userId;
 
     @Generated(event = EventType.INSERT)
-    @Column(unique = true, nullable = false, insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private Integer userCode;
 
     private String name;
     private String email;
+    private boolean professional;
 }
